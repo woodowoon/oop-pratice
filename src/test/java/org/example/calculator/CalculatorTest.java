@@ -27,7 +27,7 @@ public class CalculatorTest {
     @ParameterizedTest
     @MethodSource("formulaAndResult")
     void addtionTest1(int operand1, String operator, int operand2, int result) {
-        int calculateResult = Calculator.calculate(operand1, operator, operand2);
+        int calculateResult = Calculator.calculate(new PositiveNumber(operand1), operator, new PositiveNumber(operand2));
 
         assertThat(result).isEqualTo(calculateResult);
     }
@@ -41,13 +41,17 @@ public class CalculatorTest {
         );
     }
 
+    /*
+    // 이부분이 필요없는 이유는 이미 0또는 음수는 받을 수 없다고 체크해줬기때문에 그렇다.
     @DisplayName("나눗셈에서 0을 나누는 경우 IllegalArgument 예외를 발생시킨다.")
     @Test
     void calculateExceptionTest() {
-        assertThatCode(() -> Calculator.calculate(0, "/", 10))
+        assertThatCode(() -> Calculator.calculate(new PositiveNumber(10), "/", new PositiveNumber(0)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("0으로 나눌 수 없습니다."); // 없어도 된다.
 
     }
+
+    */
 
 }
