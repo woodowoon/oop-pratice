@@ -16,7 +16,7 @@ class UserTest {
 
         // when
         // 이 메소드를 호출했을때,
-        user.initPassword(new CorrentFixedPasswordGenerator());
+        user.initPassword(() -> "abcdefgh");
 
         // then
         // password가 isNotNull 라고 기대한다.
@@ -32,10 +32,10 @@ class UserTest {
 
         // when
         // 이 메소드를 호출했을때,
-        user.initPassword(new WrongFixedPasswordGenerator());
+        user.initPassword(() -> "ab");
 
         // then
-        // password가 isNotNull 라고 기대한다.
+        // password가 isNull 라고 기대한다.
         assertThat(user.getPassword()).isNull();
     }
 
