@@ -1,9 +1,14 @@
 package org.example.calculator;
 
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  * 간단한 사칙연산을 할 수 있다.
@@ -16,20 +21,20 @@ public class CalculatorTest {
     // 두개의 피연산자와 하나의 연산자를 ---> Calculator 에게 전달하면서 작업을 위임한다.
     //           3                  <--- 결과를 전달해준다.
     @DisplayName("덧셈 연산을 수행한다.")
-    @Test
-    void addtionTest1() {
-        int result = Calculator.calculate(1, "+", 2);
+    @ParameterizedTest
+    @MethodSource("formulaAndResult")
+    void addtionTest1(int operand1, String operator, int operand2, int result) {
+        int calculateResult = Calculator.calculate(operand1, operator, operand2);
 
-        assertThat(result).isEqualTo(3);
+        assertThat(result).isEqualTo(calculateResult);
     }
 
-    @DisplayName("뺄셈 연산을 수행한다.")
-    @Test
-    void addtionTest2() {
-        int result = Calculator.calculate(1, "-", 2);
-
-        assertThat(result).isEqualTo(-1);
+    private static Stream<Arguments> formulaAndResult() {
+        return Stream.of(
+                arguments(1, "+", 2, 3),
+                arguments(1, "-", 2, -1),
+                arguments(4, "*", 2, 8),
+                arguments(4, "/", 2, 2)
+        );
     }
-
-
 }
