@@ -2,6 +2,8 @@ package org.example;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
@@ -18,5 +20,14 @@ public class PasswordValidatorTest {
     void validatePasswordTest() {
         assertThatCode(()-> PasswordValidator.validate("serverwozard"))
                 .doesNotThrowAnyException();
+    }
+
+    @DisplayName("비밀번호가 8자 미만 또는 12자 초과하는 경우 IllegalArgumentException 예외가 발생한다.")
+    @ParameterizedTest // ValueSource를 사용할 수 있게해준다.
+    @ValueSource(strings = {"aabbcce", "aabbccddeeffg"}) // 하나의 파라미터 값이 아니라 여러개의 값을 테스트 할 수 있게 해준다.
+    void validatePasswordTest2(String password) {
+        assertThatCode(() -> PasswordValidator.validate(password))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("비밀번호는 최소 8자 이장 12자 이하 여야한다.");
     }
 }
